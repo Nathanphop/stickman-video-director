@@ -173,13 +173,31 @@ test('approval verifies actual preview bytes and never infers approval of legacy
   r = command(['approve', f.file, '--note', 'Synthetic test only']); assert.notEqual(r.status, 0); assert.match(r.stderr, /Preview changed/);
 });
 test('output symlink cannot redirect writes to another directory', async t => {
-  const f = fixture(t); fs.symlinkSync(os.tmpdir(), path.join(f.dir, 'output'), 'dir'); await assert.rejects(render(loadProject(f.file)), /real project-local/);
+  const f = fixture(t);
+  try {
+    fs.symlinkSync(os.tmpdir(), path.join(f.dir, 'output'), 'dir');
+  } catch (error) {
+    if (error?.code === 'EPERM') {
+      t.skip('Directory symlinks are unavailable in this Windows environment.');
+      return;
+    }
+    throw error;
+  }
+  await assert.rejects(render(loadProject(f.file)), /real project-local/);
 });
 test('nested cache symlink cannot redirect renderer-owned writes', async t => {
   const f = fixture(t), external = path.join(f.dir, 'keep');
   fs.mkdirSync(external); fs.mkdirSync(path.join(f.dir, 'output'));
   fs.writeFileSync(path.join(external, 'sentinel'), 'unchanged');
-  fs.symlinkSync(external, path.join(f.dir, 'output/cache'), 'dir');
+  try {
+    fs.symlinkSync(external, path.join(f.dir, 'output/cache'), 'dir');
+  } catch (error) {
+    if (error?.code === 'EPERM') {
+      t.skip('Directory symlinks are unavailable in this Windows environment.');
+      return;
+    }
+    throw error;
+  }
   await assert.rejects(render(loadProject(f.file)), /must not contain symlinks/);
   assert.equal(fs.readFileSync(path.join(external, 'sentinel'), 'utf8'), 'unchanged');
   assert.deepEqual(fs.readdirSync(external), ['sentinel']);
