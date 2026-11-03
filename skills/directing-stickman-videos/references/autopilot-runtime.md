@@ -42,7 +42,7 @@ Layers: `image` (local PNG/JPEG, contain-fit within optional `h`), `pose` (B1 on
 
 ## Commands
 
-- `doctor`: dependency/font/key presence only; no network and no key values.
+- `doctor`: local dependency/font checks plus a declaration of the default media route; no network, account session or quota checks.
 - `probe FILE`: duration and media streams.
 - `init DIR [--style B1|B2]`: create a non-overwriting project scaffold; it is not production-ready until voice, captions and shots are filled.
 - `validate PROJECT [--seconds N]`: check real files, audio duration, shot coverage, cue timing, layers and SFX. Default is the complete film; `--seconds 20` checks only the sample range.
@@ -53,9 +53,17 @@ Layers: `image` (local PNG/JPEG, contain-fit within optional `h`), `pose` (B1 on
 
 `scripts/align_captions.py AUDIO --output WORDS.json` uses optional `openai-whisper` and an already cached `base` model. Set `--model NAME`, `--language en`, `--device cpu` as appropriate. `--allow-model-download` explicitly permits model download; otherwise it stops if absent. Do not install or download multi-GB models automatically. Already supplied aligned captions need no Whisper dependency.
 
+## Default Codex and AI Studio media path
+
+For new B projects, create artwork with the host Codex image-generation capability and generate narration through `$ai-studio-tts`. Freeze accepted images and the final WAV inside the user project before authoring `project.json`; the local runtime only consumes those files.
+
+Check Codex image availability in the host. For voice readiness, follow `$ai-studio-tts`: run its read-only `options`, select an account when required, rerun account-scoped options and optionally `rpc-status`. Generate only after the narration is approved, writing an explicit absolute `.wav` path. The standard path does not use `GEMINI_API_KEY`; `doctor` reports local renderer readiness separately from host image and AI Studio session readiness.
+
+Read [B media providers](b-codex-aistudio-media.md) for the full asset, account, retry and checkpoint rules.
+
 ## Optional Gemini API adapters
 
-Browser/native generation tools can be used instead. API adapters require `GEMINI_API_KEY` in the environment, the chosen model ID and explicit network authorization. They make **one request, no automatic retries**, do not print keys/provider response bodies, and use only Google's fixed HTTPS endpoint. Failures/timeouts are recorded; inspect service history before trying again. Model access/quota is not validated by key presence. Private reference upload is opt-in through explicit `--reference` paths.
+These compatibility adapters are not the default provider path. Use them only when the user explicitly selects Gemini API generation. They require `GEMINI_API_KEY` in the environment, the chosen model ID and explicit network authorization. They make **one request, no automatic retries**, do not print keys/provider response bodies, and use only Google's fixed HTTPS endpoint. Failures/timeouts are recorded; inspect service history before trying again. Model access/quota is not validated by key presence. Private reference upload is opt-in through explicit `--reference` paths.
 
 ```bash
 node scripts/gemini-media.mjs speech --text narration.txt --output narration.wav \
@@ -64,7 +72,7 @@ node scripts/gemini-media.mjs image --prompt scene-prompt.txt --output scene.png
   --model YOUR_AVAILABLE_IMAGE_MODEL --reference character.png --allow-network
 ```
 
-The speech text file contains only the exact approved spoken words. Use the selected named voice without extra voice/style instructions; `--direction` is not supported. Verify that the selected TTS model offers the chosen voice before generation. Resolve settings as explicit user choice → selected B-style default → B common fallback; the Bodi command above illustrates the new B1 default, not a voice required for every B style. Image output is saved from the provider's native image payload, not recreated from base64 text. No default image model is assumed. API calls may be billed; the flags are not a substitute for user authorization. No API-backed request is needed for the included offline example or packaging tests.
+The speech text file contains only the exact approved spoken words. Use the selected named voice without extra voice/style instructions; `--direction` is not supported. Verify that the selected TTS model offers the chosen voice before generation. The Bodi command above is an optional API-adapter example, not the default B1 route. Image output is saved from the provider's native image payload, not recreated from base64 text. No default API image model is assumed. API calls may be billed; the flags are not a substitute for user authorization. No API-backed request is needed for the included offline example or packaging tests.
 
 ## Recovery and verification
 

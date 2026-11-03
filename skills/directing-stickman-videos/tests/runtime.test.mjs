@@ -21,6 +21,9 @@ function fixture(t) {
 }
 test('doctor checks local dependencies without network or revealing keys', () => {
   const r = command(['doctor']); assert.equal(r.status, 0, r.stderr); const data = JSON.parse(r.stdout); assert.equal(data.network_checked, false); assert.ok(data.checks.fonts);
+  assert.match(data.default_media.images, /Codex image generation/);
+  assert.match(data.default_media.narration, /ai-studio-tts/);
+  assert.match(data.note, /does not require GEMINI_API_KEY/);
 });
 test('aligned words are grouped without invented word timings', () => {
   const words = {words: [{start: 0.2, end: 0.5, word: 'Hello'}, {start: 0.6, end: 1, word: 'world.'}, {start: 1.7, end: 2, word: 'Next.'}]};

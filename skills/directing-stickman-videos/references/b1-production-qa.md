@@ -22,7 +22,7 @@ Apply the common sharpness, language, source and icon checks. B1 evidence insert
 
 Use the selected B1 caption treatment from the style reference: at 1280×720, 34px phrase captions in the bottom safe band, at most two readable lines; scale/recompose for other sizes and languages. Preserve scene text as the stronger focal point and review at phone size. Natural semantic cue/line breaks and actual-word timing come from the B common checklist, not a fixed word-count split.
 
-New B1 projects default to English with native Google Gemini Bodi at 1×, without extra style/direction prompts. Preserve accepted audio, including the earlier Sadaltager example; no automatic revoice when defaults change. Other B styles choose independently. Use restrained original/licensed, action-specific taps, paper, reveals, impacts or transitions. Mix below intelligible narration; BGM is optional, not A's mandatory piano. Listen to the actual output; technical checks cannot prove the sound matches the baseline.
+New B1 projects default to English through `$ai-studio-tts`, at the returned native speed. Prefer Bodi only when it appears in the live options; otherwise use the user-selected or returned default voice. Do not invent extra style/direction prompts. Preserve accepted audio, including the earlier Sadaltager example; no automatic revoice when defaults change. Other B styles choose independently. Use restrained original/licensed, action-specific taps, paper, reveals, impacts or transitions. Mix below intelligible narration; BGM is optional, not A's mandatory piano. Listen to the actual output; technical checks cannot prove the sound matches the baseline.
 
 ## B1 reference comparison and full-film handoff
 

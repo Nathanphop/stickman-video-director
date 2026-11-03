@@ -11,7 +11,16 @@ async function main() {
     for (const [name, exe] of [['ffmpeg', FFMPEG], ['ffprobe', FFPROBE]]) try { run(exe, ['-version']); checks[name] = true; } catch { checks[name] = false; }
     try { await import('@napi-rs/canvas'); checks.canvas = true; } catch { checks.canvas = false; }
     checks.fonts = ['Caveat.ttf', 'NotoSans.ttf'].every(f => { const file = path.join(ROOT, 'assets/fonts', f); return fs.existsSync(file) && fs.statSync(file).size > 10000; });
-    console.log(JSON.stringify({checks, gemini_key_present: Boolean(process.env.GEMINI_API_KEY), network_checked: false, note: 'Key presence is not quota/billing verification'}, null, 2));
+    console.log(JSON.stringify({
+      checks,
+      default_media: {
+        images: 'Codex image generation; verify host capability separately',
+        narration: '$ai-studio-tts; run options/account readiness separately'
+      },
+      optional_gemini_api_key_present: Boolean(process.env.GEMINI_API_KEY),
+      network_checked: false,
+      note: 'The default B media path does not require GEMINI_API_KEY; doctor checks only local rendering dependencies'
+    }, null, 2));
     if (Object.values(checks).some(v => !v)) process.exitCode = 1;
   } else if (command === 'probe') console.log(JSON.stringify(probe(path.resolve(args[0])), null, 2));
   else if (command === 'init') {

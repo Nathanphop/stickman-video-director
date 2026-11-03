@@ -1,6 +1,6 @@
 ---
 name: directing-stickman-videos
-description: "Turn topics, requirements, articles or scripts into stickman videos. Director mode creates approved storyboards and standalone video prompts; Autopilot mode produces narrated, captioned illustration-and-micro-animation videos through configured generation tools and a local renderer. Also guide installation handoff, first use and setup of this specific Skill."
+description: "Turn topics, requirements, articles or scripts into stickman videos. Director mode creates approved storyboards and standalone video prompts; Autopilot mode produces narrated, captioned illustration-and-micro-animation videos with Codex image generation, AI Studio TTS and a local renderer. Also guide installation handoff, first use and setup of this specific Skill."
 ---
 
 # Directing Stickman Videos
@@ -11,11 +11,11 @@ Keep the existing installation and name. Route by the requested deliverable:
 
 - **A · Director**: proposals, storyboards and standalone video-generation prompts. A1/A1.1/A1.2 map to Style 1 light/dark; A2/A2.1/A2.2 to Style 2/2A/2B; A3–A5 to Styles 3–5. Follow the unchanged Director contract below.
 - **A6 · Amber Noir / 暖金暗影风**: read [A6](references/amber-noir.md) when selected, before planning. It owns its reference-guided shots, optional execution routes and separate narration/finishing; bypass the A1–A5 contract below. After approvals and available setup, carry the selected route through to a finished MP4, not just copied prompts. Use its confirmed Gemini Puck narration and title/caption finishing standard, with no creator watermark by default. Explain the two routes and verified sample model only after A6 selection, not in the generic welcome or a detailed README setup section.
-- **B · Autopilot**: a finished local video with narration, captions, meaningful illustrations, local motion and SFX. Read [Autopilot](references/autopilot.md), then its selected B-style reference. B1 is [极简手绘风](references/b1-minimal-handdrawn.md); B2 is [彩色手绘风 / Colorful Hand-Drawn](references/b2-colorful-handdrawn.md). B styles have their own assets and numbering; do not silently reuse an A-style prompt or sample.
+- **B · Autopilot**: a finished local video with narration, captions, meaningful illustrations, local motion and SFX. Read [Autopilot](references/autopilot.md), the [B media-provider workflow](references/b-codex-aistudio-media.md), then its selected B-style reference. This fork defaults to Codex image generation for artwork and `$ai-studio-tts` for narration. B1 is [极简手绘风](references/b1-minimal-handdrawn.md); B2 is [彩色手绘风 / Colorful Hand-Drawn](references/b2-colorful-handdrawn.md). B styles have their own assets and numbering; do not silently reuse an A-style prompt or sample.
 
 If the mode is ambiguous, ask one short question. Honor previously supplied choices. Do not run Director's ten-second clip rules, no-visible-text rule or Phase B prompt workflow for Autopilot. Autopilot can start with a topic, promotion brief, post, article or story script; it is not story-only. English is the default narration language, but the user's language and voice choices take precedence.
 
-Voice instructions are mode-specific: B uses the selected named TTS voice as provided, with no added voice/style description. Director's detailed frozen voice profiles below and in `references/voice-continuity.md` apply only to A1–A5, not to A6 or any B style.
+Voice instructions are mode-specific: B uses `$ai-studio-tts` by default and keeps the selected live model/voice as provided, with no invented voice/style description. An explicit user provider or style choice overrides the default. Director's detailed frozen voice profiles below and in `references/voice-continuity.md` apply only to A1–A5, not to A6 or any B style.
 
 A and B share an installation, not a production contract or style library. All sections from **A · Director** to the end of this file apply only to A1–A5, including phrases such as "all styles". For B, use only Autopilot's production rules and the selected B-style reference; do not inherit A's setup, approvals, pacing, prompts, voice or visual constraints. Each B style owns its visuals, captions, voice, pacing and SFX; never inherit B1 by default. Preserve A's validated rules when revising B, and vice versa.
 

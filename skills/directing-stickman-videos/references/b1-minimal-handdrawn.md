@@ -24,7 +24,7 @@ Before generating new B1 character assets, inspect the packaged [proportion and 
 
 ## Rhythm and sound
 
-For new B1 projects, default to English narration with Google Gemini **Bodi**, as in the current baseline, unless the user chooses otherwise. Use the native named voice without added style/direction instructions; leave those fields empty. These are B1 defaults, not requirements for other B styles. Preserve existing approved recordings, including the older V15 sample's original **Sadaltager** recording; do not regenerate them to match a new-project default.
+For new B1 projects, default to `$ai-studio-tts` with English narration. Prefer **Bodi** only when the live AI Studio `options` result includes that voice; otherwise recommend the returned default or let the user choose from the live list. Keep the provider's default style without invented direction unless the user explicitly selects a returned live style. This is a B1 preference, not a requirement for other B styles. Preserve existing approved recordings, including the older V15 sample's original **Sadaltager** recording; do not regenerate them to match a new-project default.
 
 Voice leads at native **1×** speed. Retain natural pace and pauses; target duration is not permission to stretch speech. Character shots occupy roughly **60–70% of direct screen time** for the approved B1 promotional format, not 60–70% of image area and not a hard requirement for every possible story. Include character-free closeups and reading holds with purposeful picture progression. Fit pictures and information reveals to the actual spoken meaning, not speech to prebuilt slides.
 

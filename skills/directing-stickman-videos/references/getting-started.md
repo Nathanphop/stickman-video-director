@@ -65,7 +65,7 @@ Adapt this Chinese example to the actual environment and installation status:
 
 - **适合做什么**：YouTube 知识讲解、产品宣传、故事解说和连续故事短剧；可以先试 20 秒，再做 5～10 分钟或更长的内容，不用逐段手动拼装。
 - **你会拿到什么**：配好旁白、字幕、微动画和音效的完整 MP4 视频，以及字幕文件。画面以插画、重点文字和微动画配合讲述。
-- **需要准备什么**：在 Codex、Claude Code 等能操作文件、执行命令的环境中使用；还需要可用的生图、配音服务，以及把素材合成视频的本地工具。我会先检查已有配置，只带你补缺少的部分。
+- **需要准备什么**：在可操作文件和执行命令的 Codex 环境中使用；默认由 Codex 生成插画、由 `$ai-studio-tts` 通过已登录的 Google AI Studio 会话生成旁白，再由本地工具合成视频。我会先检查这些能力，只带你补缺少的登录或选择。
 - **怎么进行**：给内容和需求 → 检查配置 → 确认脚本、画风和声音 → 看约 20 秒有声样片 → 确认后自动制作整片 → 拿到视频文件。
 
 两种模式都可在**你确认成片满意后**，选择继续制作匹配当前画风的封面、标题、简介与置顶评论；也可以直接结束。不需要重新选模式或复制一套提示词；可用的生图工具与费用会另行确认，发布账号不会被自动操作。
@@ -75,13 +75,13 @@ Adapt this Chinese example to the actual environment and installation status:
 ```text
 使用全自动模式/B模式，把这篇文章做成适合 YouTube 的 5 分钟宣传视频。
 横屏 16:9，用 B1「极简手绘风」，英文旁白，配好字幕和音效。
-先帮我检查生图、配音和视频合成配置，再给我脚本与 20 秒有声样片。
+先帮我检查 Codex 生图、AI Studio TTS 会话和视频合成配置，再给我脚本与 20 秒有声样片。
 文章链接：[粘贴链接]
 ```
 
 #### 现在怎么开始？
 
-直接发来**内容＋想拿到的结果**就行，例如：“我想做一个介绍这个工具的 YouTube 视频，希望自动拿到完整成片。”也可以补充时长、横竖屏、画风、语言和音色；没想好的部分，我会接着引导，不需要一次填完所有选项。A 模式的旁白和声音设计沿用原有规则；B 模式按所选画风配置字幕和配音，B1 默认英语和 Google Gemini 的 Bodi 音色，你也可以指定其他语言、平台或音色。不同 B 画风可以有各自的默认配置，但都会配好旁白和字幕。
+直接发来**内容＋想拿到的结果**就行，例如：“我想做一个介绍这个工具的 YouTube 视频，希望自动拿到完整成片。”也可以补充时长、横竖屏、画风、语言和音色；没想好的部分，我会接着引导，不需要一次填完所有选项。A 模式的旁白和声音设计沿用原有规则；B 模式默认用 Codex 生图和 `$ai-studio-tts` 配音。B1 偏好英语和 Bodi，但只有 AI Studio 的实时选项确实返回 Bodi 时才会选用；你也可以指定其他语言或实时可用的音色。不同 B 画风仍保留各自的视觉、字幕与声音偏好。
 
 如果工具还没配好，可以先说：**“我想用全自动模式，但不知道怎么配置，先帮我检查。”** 我会说明哪些能用了、哪些还缺，以及具体怎么补；涉及收费的生成会先说明，不会因为安装好了就直接开始付费制作。
 
@@ -153,23 +153,23 @@ Resolve the topic/source, audience, purpose, duration, ratio, B-style and narrat
 
 ### 2. Configuration check
 
-Run the documented local `doctor` check and inspect the user's chosen image and voice services. Resolve each setting as **explicit user choice → selected B-style default → B common fallback**, as defined in Autopilot. Check that resolved provider/voice first; for new B1 projects without a user override this is Google Gemini/Bodi. Do not ask the user to choose a platform again merely because they accepted defaults. Summarize actual findings in plain language, separating **ready**, **missing** and **not yet verified**:
+Run the documented local `doctor` check, verify the host Codex image capability and apply the read-only `$ai-studio-tts` options/account readiness workflow. Resolve each setting as **explicit user choice → selected B-style creative default → B provider default**, as defined in Autopilot. The provider default is Codex image generation plus `$ai-studio-tts`; do not ask the user to choose another platform merely because they accepted these defaults. Summarize actual findings in plain language, separating **ready**, **missing** and **not yet verified**:
 
 - Local composition: Node 20+, FFmpeg/FFprobe, renderer dependencies and suitable fonts. If something is missing, name that component, explain its role briefly, and give the next platform-appropriate installation/configuration step. Install project dependencies only with the host's normal permissions; after a repair, verify the affected check again.
-- Image and voice generation: reuse an available configured tool or authenticated interface if suitable. Do not demand a Gemini API key when the chosen browser/native tool does not use one. If image generation is not configured, guide selection of an available image service. For narration, check the resolved provider/voice and explain only the missing login, access or configuration; do not require Bodi when the user or selected style specifies another voice. For API adapters use environment variables, never pasted secret values. Do not silently replace the selected voice/service with local OS TTS.
-- Evidence and cost: `doctor` checks local dependencies and key presence, not login, model access, quota or billing. Report those as unverified unless separately checked; an account subscription or an environment variable alone does not make generation ready. Disclose the planned billable calls/cost and obtain authorization before making them. Do not make a paid test call simply to populate the checklist.
+- Image and voice generation: verify the Codex image capability without generating a paid sample. For narration, run `$ai-studio-tts` `options`; if it returns multiple accounts, present the labels for user selection, then verify the chosen account's live models/voices and optionally `rpc-status`. Do not require a Gemini API key for this default route, invent a missing voice, or silently replace AI Studio with local OS TTS. Use an API adapter only when the user explicitly selects it, with secrets kept in environment variables.
+- Evidence and cost: `doctor` checks local dependencies only. Codex image availability and AI Studio account/model/voice access require their separate read-only checks; quota or billing remains unverified until independently confirmed. Disclose planned billable calls/cost and obtain authorization before making them. Do not make a paid test call merely to populate the checklist.
 
 State the smallest next fix, not just "configuration failed" or a raw terminal dump. For example:
 
 > 已完成：本地合成工具检查通过，已确认横屏 16:9 和 B1 极简手绘风。
-> 还缺什么：生图服务尚未选择；默认 Google Gemini/Bodi 的模型访问和额度还未验证。
-> 下一步：先确认使用哪种生图工具；配音按默认 Bodi 路径继续检查，只有缺少访问权限或配置时再带你补齐。暂不调用付费生成，脚本可以先继续准备。
+> 还缺什么：AI Studio 返回多个已登录账号，尚未选择本次配音账号；Codex 生图能力已发现但尚未做付费生成。
+> 下一步：先让用户从 `options` 返回的账号标签中选择一个，再读取该账号的实时模型与音色；暂不调用任何付费生成，脚本可以先继续准备。
 
 If the host cannot read/write files or execute commands, explain that Autopilot cannot render here and offer a compatible environment or Director mode. Do not silently switch modes or call a prompt package a finished film.
 
 ### 3. Script, character and voice plan
 
-Show the short outline/script, design, caption treatment and voice choices required by Autopilot. State what needs confirmation before generating media, and identify any service/cost blockers still open. Follow the settings order above; B1's caption and voice defaults do not constrain another B style. Verify the selected provider/model/voice as described in Autopilot; check Bodi availability only when Bodi is selected. Narration and synchronized subtitles are required. Carry the approved voice and assets forward unchanged.
+Show the short outline/script, design, caption treatment and live AI Studio account/model/voice choices required by Autopilot. State what needs confirmation before generating media, and identify any service/cost blockers still open. Follow the settings order above; B1's caption and preferred voice do not constrain another B style. Check Bodi or Fola only when the selected style prefers it, and select it only when the chosen account's live options include it. Narration and synchronized subtitles are required. Carry approved Codex images and AI Studio voice assets forward unchanged.
 
 For B, explain the selected service/model and named voice, not a custom descriptive voice profile. Use that voice as provided with no added style/direction instructions; follow Autopilot's voice-led rule for every B style.
 
